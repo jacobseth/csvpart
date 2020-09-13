@@ -13,8 +13,8 @@ func TestLTPCorrectLCForPerc(t *testing.T) {
 	// 100 seems too neat - Want those funky rounding errors
 	lineCount := 123
 	whole := false
-	testParams := []struct{
-		percs []float32
+	testParams := []struct {
+		percs    []float32
 		expected []int
 	}{
 		{
@@ -59,8 +59,8 @@ func TestLTPCorrectLCForPercWithWhole(t *testing.T) {
 	// 100 seems too neat - Want those funky rounding errors
 	lineCount := 123
 	whole := true
-	testParams := []struct{
-		percs []float32
+	testParams := []struct {
+		percs    []float32
 		expected []int
 	}{
 		{
@@ -99,8 +99,8 @@ func TestLTPCorrectLCForPercWithHeader(t *testing.T) {
 	lineCount := 123
 	whole := false
 	header := 12
-	testParams := []struct{
-		percs []float32
+	testParams := []struct {
+		percs    []float32
 		expected []int
 	}{
 		{
@@ -122,7 +122,7 @@ func TestLTPCorrectLCForPercWithHeader(t *testing.T) {
 		if len(tp.expected) != len(tp.percs) {
 			t.Errorf("Testing data sizes don't match; Percentages: %d, Expected: %d", len(tp.percs), len(tp.expected))
 		}
-		lcps, err := linesToPercs(lineCount + header, tp.percs, header, whole)
+		lcps, err := linesToPercs(lineCount+header, tp.percs, header, whole)
 		if err != nil {
 			t.Error(err)
 		}
@@ -143,8 +143,8 @@ func TestLTPCorrectLCForPercWithWholeAndHeader(t *testing.T) {
 	lineCount := 123
 	whole := true
 	header := 12
-	testParams := []struct{
-		percs []float32
+	testParams := []struct {
+		percs    []float32
 		expected []int
 	}{
 		{
@@ -162,7 +162,7 @@ func TestLTPCorrectLCForPercWithWholeAndHeader(t *testing.T) {
 	}
 
 	for _, tp := range testParams {
-		lcps, err := linesToPercs(lineCount + header, tp.percs, header, whole)
+		lcps, err := linesToPercs(lineCount+header, tp.percs, header, whole)
 		if err != nil {
 			t.Error(err)
 		}

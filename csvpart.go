@@ -19,29 +19,29 @@ func main() {
 	var whole bool
 
 	app := &cli.App{
-		Name: "CSVPart",
+		Name:  "CSVPart",
 		Usage: "Separate a CSV file into smaller ones based on percentage",
-		Flags: []cli.Flag {
+		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name: "file",
-				Usage: "file to be partitioned",
+				Name:        "file",
+				Usage:       "file to be partitioned",
 				Destination: &filename,
-				Required: true,
+				Required:    true,
 			},
-				&cli.IntFlag{
-					Name: "headers",
-					Usage: "number of header lines to duplicate",
-					Destination: &headers,
-					Required: true,
-				},
-				&cli.BoolFlag{
-					Name:  "whole",
-					Usage: "Assume provided percentage is a part of a whole, and fill the remainder",
-					Destination: &whole,
-					Value: false,
-					DefaultText: "false",
-				},
+			&cli.IntFlag{
+				Name:        "headers",
+				Usage:       "number of header lines to duplicate",
+				Destination: &headers,
+				Required:    true,
 			},
+			&cli.BoolFlag{
+				Name:        "whole",
+				Usage:       "Assume provided percentage is a part of a whole, and fill the remainder",
+				Destination: &whole,
+				Value:       false,
+				DefaultText: "false",
+			},
+		},
 		Action: func(c *cli.Context) error {
 			file, err := os.Open(filename)
 			if err != nil {
@@ -79,7 +79,7 @@ func main() {
 // Line count and percentage
 type lcAndPerc struct {
 	lines int
-	perc float32
+	perc  float32
 }
 
 // Extract line counts for the provided percentages
@@ -93,7 +93,7 @@ func linesToPercs(lines int, percs []float32, headers int, whole bool) ([]lcAndP
 	lSum := 0
 
 	for _, p := range percs {
-		lc :=  int(math.Round(float64((p / 100) * float32(realLc))))
+		lc := int(math.Round(float64((p / 100) * float32(realLc))))
 		lSum = lSum + lc
 
 		lcAndPercs = append(lcAndPercs, lcAndPerc{lc, p})
