@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"errors"
 	"fmt"
@@ -9,6 +10,7 @@ import (
 	"math"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/urfave/cli"
 )
@@ -43,11 +45,11 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			file, err := os.Open(filename)
+			srcFile, err := os.Open(filename)
 			if err != nil {
 				log.Fatal(err)
 			}
-			lines, err := lineCount(file)
+			lines, err := lineCount(srcFile)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -63,8 +65,37 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			for _, lc := range lcs {
-				fmt.Printf("lines:%d\n", lc)
+
+			srcBuff := bufio.NewReader(srcFile)
+			hBytes := make([]byte, 0)
+			srcFile.Seek(0, 0)
+			for i := 0; i < headers; i++ {
+				h, err := srcBuff.ReadBytes('\n')
+				if err != nil {
+					log.Fatal(err)
+				}
+				hBytes = append(hBytes, h...)
+			}
+
+			newFiles := make([]string, 0)
+			for idx, lc := range lcs {
+				fname := fmt.Sprintf("%d_%s.csv", idx, strings.Split(filename, ".")[0])
+				f, err := os.Create(fname)
+				if err != nil {
+					removeFiles(newFiles)
+					log.Fatal(err)
+				}
+				newFiles = append(newFiles, fname)
+
+				f.Write(hBytes)
+				for i := 0; i < lc; i++ {
+					l, err := srcBuff.ReadBytes('\n')
+					if err != nil {
+						removeFiles(newFiles)
+						log.Fatal(err)
+					}
+					f.Write(l)
+				}
 			}
 
 			return nil
@@ -74,6 +105,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func removeFiles(fileNames []string) (err error) {
+	for _, name := range fileNames {
+		err = os.Remove(name)
+	}
+	return
 }
 
 // Extract line counts for the provided percentages
