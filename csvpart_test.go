@@ -2,14 +2,14 @@ package main
 
 import "testing"
 
-// linesToPercs - LTP
-func TestLTPHeaderCountToLarge(t *testing.T) {
-	if _, err := linesToPercs(1, []float32{100}, 2, false); err == nil {
+// linesFromPercs - LFP
+func TestLFPHeaderCountToLarge(t *testing.T) {
+	if _, err := linesFromPercs(1, []float32{100}, 2, false); err == nil {
 		t.Errorf("Expected line sum too large error")
 	}
 }
 
-func TestLTPCorrectLCForPerc(t *testing.T) {
+func TestLFPCorrectLCForPerc(t *testing.T) {
 	// 100 seems too neat - Want those funky rounding errors
 	lineCount := 123
 	whole := false
@@ -36,7 +36,7 @@ func TestLTPCorrectLCForPerc(t *testing.T) {
 		if len(tp.expected) != len(tp.percs) {
 			t.Errorf("Testing data sizes don't match; Percentages: %d, Expected: %d", len(tp.percs), len(tp.expected))
 		}
-		lcps, err := linesToPercs(lineCount, tp.percs, 0, whole)
+		lcps, err := linesFromPercs(lineCount, tp.percs, 0, whole)
 		if err != nil {
 			t.Error(err)
 		}
@@ -45,17 +45,17 @@ func TestLTPCorrectLCForPerc(t *testing.T) {
 		}
 
 		for i := 0; i < len(lcps); i++ {
-			if lcps[i].lines != tp.expected[i] {
-				t.Errorf("Wrong RV: expected %d, got %d", tp.expected[i], lcps[i].lines)
+			if lcps[i] != tp.expected[i] {
+				t.Errorf("Wrong RV: expected %d, got %d", tp.expected[i], lcps[i])
 			}
 		}
 	}
 }
 
-// End -- LTP
+// End -- LFP
 
-// linesToPercs - LTP with --whole
-func TestLTPCorrectLCForPercWithWhole(t *testing.T) {
+// linesFromPercs - LFP with --whole
+func TestLFPCorrectLCForPercWithWhole(t *testing.T) {
 	// 100 seems too neat - Want those funky rounding errors
 	lineCount := 123
 	whole := true
@@ -78,23 +78,23 @@ func TestLTPCorrectLCForPercWithWhole(t *testing.T) {
 	}
 
 	for _, tp := range testParams {
-		lcps, err := linesToPercs(lineCount, tp.percs, 0, whole)
+		lcps, err := linesFromPercs(lineCount, tp.percs, 0, whole)
 		if err != nil {
 			t.Error(err)
 		}
 
 		for i := 0; i < len(lcps); i++ {
-			if lcps[i].lines != tp.expected[i] {
-				t.Errorf("Wrong RV: expected %d, got %d", tp.expected[i], lcps[i].lines)
+			if lcps[i] != tp.expected[i] {
+				t.Errorf("Wrong RV: expected %d, got %d", tp.expected[i], lcps[i])
 			}
 		}
 	}
 }
 
-// End LTP with --whole
+// End LFP with --whole
 
 // Header test
-func TestLTPCorrectLCForPercWithHeader(t *testing.T) {
+func TestLFPCorrectLCForPercWithHeader(t *testing.T) {
 	// 100 seems too neat - Want those funky rounding errors
 	lineCount := 123
 	whole := false
@@ -122,7 +122,7 @@ func TestLTPCorrectLCForPercWithHeader(t *testing.T) {
 		if len(tp.expected) != len(tp.percs) {
 			t.Errorf("Testing data sizes don't match; Percentages: %d, Expected: %d", len(tp.percs), len(tp.expected))
 		}
-		lcps, err := linesToPercs(lineCount+header, tp.percs, header, whole)
+		lcps, err := linesFromPercs(lineCount+header, tp.percs, header, whole)
 		if err != nil {
 			t.Error(err)
 		}
@@ -131,14 +131,14 @@ func TestLTPCorrectLCForPercWithHeader(t *testing.T) {
 		}
 
 		for i := 0; i < len(lcps); i++ {
-			if lcps[i].lines != tp.expected[i] {
-				t.Errorf("Wrong RV: expected %d, got %d", tp.expected[i], lcps[i].lines)
+			if lcps[i] != tp.expected[i] {
+				t.Errorf("Wrong RV: expected %d, got %d", tp.expected[i], lcps[i])
 			}
 		}
 	}
 }
 
-func TestLTPCorrectLCForPercWithWholeAndHeader(t *testing.T) {
+func TestLFPCorrectLCForPercWithWholeAndHeader(t *testing.T) {
 	// 100 seems too neat - Want those funky rounding errors
 	lineCount := 123
 	whole := true
@@ -162,14 +162,14 @@ func TestLTPCorrectLCForPercWithWholeAndHeader(t *testing.T) {
 	}
 
 	for _, tp := range testParams {
-		lcps, err := linesToPercs(lineCount+header, tp.percs, header, whole)
+		lcps, err := linesFromPercs(lineCount+header, tp.percs, header, whole)
 		if err != nil {
 			t.Error(err)
 		}
 
 		for i := 0; i < len(lcps); i++ {
-			if lcps[i].lines != tp.expected[i] {
-				t.Errorf("Wrong RV: expected %d, got %d", tp.expected[i], lcps[i].lines)
+			if lcps[i] != tp.expected[i] {
+				t.Errorf("Wrong RV: expected %d, got %d", tp.expected[i], lcps[i])
 			}
 		}
 	}

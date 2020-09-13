@@ -59,12 +59,12 @@ func main() {
 			}
 			fmt.Printf("%v\n", percs)
 
-			lcAndPercs, err := linesToPercs(lines, percs, headers, whole)
+			lcs, err := linesFromPercs(lines, percs, headers, whole)
 			if err != nil {
 				log.Fatal(err)
 			}
-			for _, t := range lcAndPercs {
-				fmt.Printf("lines:%d, perc:%f\n", t.lines, t.perc)
+			for _, lc := range lcs {
+				fmt.Printf("lines:%d\n", lc)
 			}
 
 			return nil
@@ -76,27 +76,21 @@ func main() {
 	}
 }
 
-// Line count and percentage
-type lcAndPerc struct {
-	lines int
-	perc  float32
-}
-
 // Extract line counts for the provided percentages
-func linesToPercs(lines int, percs []float32, headers int, whole bool) ([]lcAndPerc, error) {
+func linesFromPercs(lines int, percs []float32, headers int, whole bool) ([]int, error) {
 	realLc := lines - headers
 	if realLc < 0 {
 		return nil, errors.New("Headers cannot be larger than file's line count")
 	}
 
-	lcAndPercs := make([]lcAndPerc, 0)
+	lcs := make([]int, 0)
 	lSum := 0
 
 	for _, p := range percs {
 		lc := int(math.Round(float64((p / 100) * float32(realLc))))
 		lSum = lSum + lc
 
-		lcAndPercs = append(lcAndPercs, lcAndPerc{lc, p})
+		lcs = append(lcs, lc)
 	}
 
 	// If lSum == realLc, the provided percentages account for all the lines already
@@ -105,12 +99,10 @@ func linesToPercs(lines int, percs []float32, headers int, whole bool) ([]lcAndP
 		if lSum > realLc {
 			return nil, errors.New("Line sum larger than line count. Attempt without -whole flag")
 		}
-
-		remPerc := 100 / (float32(realLc) / float32(rem))
-		lcAndPercs = append(lcAndPercs, lcAndPerc{rem, float32(remPerc)})
+		lcs = append(lcs, rem)
 	}
 
-	return lcAndPercs, nil
+	return lcs, nil
 }
 
 // based on: https://stackoverflow.com/a/24563853
