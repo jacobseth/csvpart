@@ -103,7 +103,7 @@ func linesToPercs(lines int, percs []float32, headers int, whole bool) ([]lcAndP
 	if whole && lSum != realLc {
 		rem := realLc - lSum
 		if lSum > realLc {
-			return nil, errors.New("Line sum larger than line count. Attemp without -whole flag")
+			return nil, errors.New("Line sum larger than line count. Attempt without -whole flag")
 		}
 
 		remPerc := 100 / (float32(realLc) / float32(rem))
