@@ -53,13 +53,11 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			fmt.Printf("%v\n", lines)
 
 			percs, err := parsePercs(c.Args().Slice())
 			if err != nil {
 				log.Fatal(err)
 			}
-			fmt.Printf("%v\n", percs)
 
 			lcs, err := linesFromPercs(lines, percs, headers, whole)
 			if err != nil {
@@ -98,6 +96,7 @@ func main() {
 				}
 			}
 
+			fmt.Println("Done!")
 			return nil
 		},
 	}
