@@ -25,8 +25,8 @@ func main() {
 		Usage: "Separate a CSV file into smaller ones based on percentage",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:        "file",
-				Usage:       "file to be partitioned",
+				Name:        "filename",
+				Usage:       "name of file to be partitioned",
 				Destination: &filename,
 				Required:    true,
 			},
@@ -96,7 +96,7 @@ func main() {
 				}
 			}
 
-			fmt.Println("Done!")
+			fmt.Println("Done 👍")
 			return nil
 		},
 	}

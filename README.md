@@ -29,10 +29,10 @@ COMMANDS:
    help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
-   --file value     file to be partitioned
-   --headers value  number of header lines to duplicate (default: 0)
-   --whole          Assume provided percentage is a part of a whole, and fill the remainder (default: false)
-   --help, -h       show help (default: false)
+   --filename value  name of file to be partitioned
+   --headers value   number of header lines to duplicate (default: 0)
+   --whole           Assume provided percentage is a part of a whole, and fill the remainder (default: false)
+   --help, -h        show help (default: false)
 ```
 
 Resultant files are named based on the index of their respective percentages, in
@@ -42,13 +42,13 @@ the following format: `%d_some_data.csv`.
 ### Split a CSV file 60% - 40%
 
 ``` bash
-csvpart -headers 1 -file some_data.csv 60 40
+csvpart --headers 1 --filename some_data.csv 60 40
 ```
 
-### Split a CSV file 60% - ~40% using -whole flag
+### Split a CSV file 60% - ~40% using --whole flag
 
 ``` bash
-csvpart -headers 1 -file some_data.csv 60
+csvpart --headers 1 --filename some_data.csv --whole 60
 ```
 
 ---
